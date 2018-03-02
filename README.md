@@ -7,7 +7,7 @@
     - Have user preferences -> 
       1. **Use preferences to find match products (based on matched preferences, scoring on tags, themes, etc.) -> elastic search built in**
       2. Use preferences to find similar users
-      3. Recommend popular {act} products based on preferences
+      3. Recommend popular {click/view/like/rent} products based on preferences
     - Not have preferences -> 
       1. **Recommend top click products**
       2. Recommend top {view/like/rent} products
@@ -18,34 +18,36 @@
 - DataLoader.py: Provides interfaces to load, tranform and update required data
 - Recommender.py: Provides interfaces to get recommendation products and test one new user
 - utils.py: Contains some helper functions
-- Some examples that are self-explainable
+- Some examples that are self-explained
 
 ## For product show page
-- Show **你可能還會喜歡** by [ElasticSearch](https://www.elastic.co/cn/) tf-idf-like scoring on product's name, tags etc.
-- Show **其他人也點了** by scoring based on product embedding vector obtained by MF (example_getSimProduct.py)
+- Show **You might also like** by [ElasticSearch](https://www.elastic.co/cn/) tf-idf-like scoring on product's name, tags etc.
+- Show **Others click on** by scoring based on product embedding vector obtained by MF (example_getSimProduct.py)
 
 ## Brief Introduction of Matrix Factorization
-顧客對產品的點擊次數 是一個矩陣 R (dimension |U|x|D|)
+Say we have a user-product matrix R which contains the click counts
 
-|U|是總共顧客的數量，|D|是總共產品的數量
+it is of dimension |U|x|D|
 
-MF是把這矩陣拆成 兩個矩陣 P (|U| x K) 和 Q (|D| x K) 相乘，K是我們自己設的維度
+while |U| is the number of user and |D| is the number of product
 
-R 約等於 R_hat = P x Q
+MF aims at divide R to be two matrix  P (|U| x K) and Q (|D| x K)
 
-然後每一個 p (a 1xK vector) 就是代表那個user的embedding vector，
+where K is the latent dimension we set
 
-每一個 q (a  1xK vector) 就是代表那個product的embedding vector，
+And satisfy that R ~ R_hat = P x Q'
 
-將某個人的 p 乘上一個產品的 q 即得出他點擊該產品的可能性，也就是分數，
+So every p (a 1xK vector) can be think of a user's embedding vector
 
-對每個人，把這些分數sorting好，高分在前、低分在後，這樣子去推薦。
+and every q (a 1xK vector) is the product's embedding vector，
 
-而從|U|和|D|的dimension降維到K，
+multiply someone's p with a product's q yields the score that he/she could click a product
 
-中間所獲得資訊，
+To do the recommendation, for each person, we count the score for every product
 
-就有點像是哪些user的行為相像的感覺。
+And we sort the score and recommend the highest ones
+
+An intuition behind this is we do dimension reduction from a sparse matrix to capture the underlying correspondence between each user and products
 
 ## Initialize the environment
 1. Make sure the following directories exist
