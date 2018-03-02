@@ -7,7 +7,7 @@
     - Have user preferences -> 
       1. **Use preferences to find match products (based on matched preferences, scoring on tags, themes, etc.) -> elastic search built in**
       2. Use preferences to find similar users
-      3. Recommend popular {click/view/like/rent} products based on preferences
+      3. Recommend popular {click/view/like/rent} products based on preferences
     - Not have preferences -> 
       1. **Recommend top click products**
       2. Recommend top {view/like/rent} products
